@@ -1,14 +1,52 @@
-<!DOCTYPE html>
-<html>
+  <html>
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+  
+ <title>pawculator</title>
 </head>
-<body>
-   meow 
+<body style="text-align:center; padding:30px; font-family: fantasy;">
+
+  <h2>pawculator</h2>
+
+  <input type="number" id="num1" placeholder="meow">  
+  <br><br>
+
+  <input type="number" id="num2" placeholder="meow">  
+  <br><br>
+
+  <button onmouseover="calc('+')"> + </button>
+  <button onmouseover="calc('-')"> - </button>
+  <button onmouseover="calc('*')"> x </button>
+  <button onmouseover="calc('/')"> ÷ </button>
+
+  <br><br>
+
+  <div style="font-size:28px; margin:28px; font-family: cursive;">
+    Result: <span id="result">?</span>
+  </div>
+
+  <script>
+    function calc(op) {
+      let a = Number(document.getElementById("num1").value);
+      let b = Number(document.getElementById("num2").value);
+      
+      let answer;
+
+      if (isNaN(a) || isNaN(b)) {
+        answer = "enter numbers";
+      }
+      else if (op === '/' && b === 0) {
+        answer = "cant";
+      }
+      else {
+        if      (op === '+') answer = a + b;
+        else if (op === '-') answer = a - b;
+        else if (op === '*') answer = a * b;
+        else if (op === '/') answer = a / b;
+      }
+
+      document.getElementById("result").innerText = answer;
+    }
+  </script>
+
 </body>
 </html>
