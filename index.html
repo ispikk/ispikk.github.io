@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <head>
   
  <title>pawculator</title>
@@ -16,18 +16,14 @@
   <button onmouseover="calc('+')"> + </button>
   <button onmouseover="calc('-')"> - </button>
   <button onmouseover="calc('*')"> x </button>
-  <button onmouseover="calc('/')"> ÷ </button>
-
-  <br><br>
-
-  <div style="font-size:28px; margin:28px; font-family: cursive;">
-    Result: <span id="result">?</span>
+  <button onmouseover="calc('/')"> ÷ </button>  <br><br>  <div style="font-size:28px; margin:28px; font-family: cursive;">
+    Result: <span id="result">😺 ?</span>
   </div>
 
   <script>
     function calc(op) { 
-      let a = Number(document.getElementById("num1").valueasanumber);
-      let b = Number(document.getElementById("num2").valueasanumber);
+      let a = Number(document.getElementById("num1").valueAsNumber);
+      let b = Number(document.getElementById("num2").valueAsNumber);
       
       let answer;
 
@@ -44,9 +40,10 @@
         else if (op === '/') answer = a / b;
       }
 
-      document.getElementById("result").innerText = answer;
+      document.getElementById("result").innerText = answer + " 🐾";
     }
   </script>
 
 </body>
 </html>
+
