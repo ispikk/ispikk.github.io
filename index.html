@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <head>
-  
- <title>pawculator</title>
+  <title>pawculator</title>
 </head>
 <body style="text-align:center; padding:30px; font-family: fantasy;">
 
@@ -13,11 +12,15 @@
   <input type="number" id="num2" placeholder="meow">  
   <br><br>
 
-  <button onmouseover="calc('+')"> + </button>
-  <button onmouseover="calc('-')"> - </button>
-  <button onmouseover="calc('*')"> x </button>
-  <button onmouseover="calc('/')"> ÷ </button>  <br><br>  <div style="font-size:28px; margin:28px; font-family: cursive;">
-    Result: <span id="result">😺 ?</span>
+  <button onclick="calc('+')"> + </button>
+  <button onclick="calc('-')"> - </button>
+  <button onclick="calc('*')"> x </button>  
+  <button onclick="calc('/')"> ÷ </button>
+  <button onclick="calc('!')"> ! </button>  
+  <br><br>
+
+  <div style="font-size:28px; margin:28px; font-family: cursive;">
+    Result: <span id="result">?</span>
   </div>
 
   <script>
@@ -28,10 +31,25 @@
       let answer;
 
       if (isNaN(a) || isNaN(b)) {
-        answer = "enter numbers";
+        answer = "enter numbers pls";
       }
       else if (op === '/' && b === 0) {
-        answer = "cant";
+        answer = "can't divide by 0 :s";
+      }
+      else if (op === '!') {
+        
+        if (!Number.isInteger(b) || b < 0) {
+          answer = "only non-negative integers for !";
+        } else {
+          answer = 1;
+          for (let i = 2; i <= b; i++) {
+            answer *= i;
+          }
+          
+          if (answer === Infinity) {
+            answer = "∞ owo thats too big :3";
+          }
+        }
       }
       else {
         if      (op === '+') answer = a + b;
@@ -40,10 +58,9 @@
         else if (op === '/') answer = a / b;
       }
 
-      document.getElementById("result").innerText = answer + " 🐾";
+      document.getElementById("result").innerText = answer + "    ₍^. .^₎⟆";
     }
   </script>
 
 </body>
 </html>
-
