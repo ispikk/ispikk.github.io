@@ -81,4 +81,4 @@ function calculateFactorial() {
   updateDisplay();
 }
 
-console.log("pawculator online ₍^. .^₎");
+console.log("pawculator online dont cat₍^. .^₎");
