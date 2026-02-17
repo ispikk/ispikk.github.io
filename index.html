@@ -3,93 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>pawculator ₍^. .^₎</title>
-  <style>
-    body {
-      font-family: "Comic Sans MS", cursive, fantasy;
-      text-align: center;
-      background: #fff0f5;     
-      padding: 20px;
-      color: #4a4a4a;
-    }
-    h1 {
-      color: #e85a8c;          
-      margin-bottom: 10px;
-      font-size: 3.3rem;
-      text-shadow: 2px 2px #ffe4f0;
-    }
-    .display {
-      font-size: 2.9rem;
-      background: #ffffff;
-      border: 3px solid #f9c8d8;
-      border-radius: 20px;
-      padding: 18px 24px;
-      margin: 24px auto;
-      width: 340px;
-      min-height: 85px;
-      box-shadow: 0 5px #f4a3c2;
-      color: #333333;
-      font-weight: bold;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .container {
-      max-width: 380px;
-      margin: 0 auto;
-    }
-    .row {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin: 12px 0;
-    }
-    button {
-      width: 82px;
-      height: 82px;
-      font-size: 2.2rem;
-      border: none;
-      border-radius: 22px;
-      cursor: pointer;
-      transition: all 0.13s;
-      user-select: none;
-      box-shadow: 0 4px #d68ab0;
-    }
-    button:active {
-      transform: translateY(3px);
-      box-shadow: 0 1px #d68ab0;
-    }
-
-    
-button.num {
-  background: #ffe4f0;      
-  color: #c71585;           
-  font-weight: bold;
-}
-button.op {
-  background: #ff9ac7;      
-  color: white;
-  font-weight: bold;
-}
-button.equals {
-  background: #ff6b9d;      
-  color: white;
-  font-size: 2.5rem;
-  width: 178px;
-  box-shadow: 0 4px #e04d87;
-}
-button.equals:active {
-  box-shadow: 0 1px #e04d87;
-}
-button.clear {
-  background: #ff85ad;
-  color: white;
-  font-weight: bold;
-}
-
-.small {
-  font-size: 1.2rem;
-  color: #777;
-  margin-top: 12px;
-}  </style></head>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
   <h1>ฅ^•⩊•^ฅ pawculator ₍^. .^₎Ⳋ</h1>
@@ -97,140 +12,41 @@ button.clear {
   <div class="container">
     <div class="display" id="display">0</div>
 
-<div class="row">
-  <button class="clear" onclick="clearAll()">C</button>
-  <button class="op" onclick="appendToInput('!')">!</button>
-  <button class="op" onclick="appendToInput('/')">÷</button>
-</div>
+    <div class="row">
+      <button class="clear" onclick="clearAll()">C</button>
+      <button class="op" onclick="appendToInput('!')">!</button>
+      <button class="op" onclick="appendToInput('/')">÷</button>
+    </div>
 
-<div class="row">
-  <button class="num" onclick="appendToInput('7')">7</button>
-  <button class="num" onclick="appendToInput('8')">8</button>
-  <button class="num" onclick="appendToInput('9')">9</button>
-  <button class="op" onclick="appendToInput('*')">x</button>
-</div>
+    <div class="row">
+      <button class="num" onclick="appendToInput('7')">7</button>
+      <button class="num" onclick="appendToInput('8')">8</button>
+      <button class="num" onclick="appendToInput('9')">9</button>
+      <button class="op" onclick="appendToInput('*')">x</button>
+    </div>
 
-<div class="row">
-  <button class="num" onclick="appendToInput('4')">4</button>
-  <button class="num" onclick="appendToInput('5')">5</button>
-  <button class="num" onclick="appendToInput('6')">6</button>
-  <button class="op" onclick="appendToInput('-')">-</button>
-</div>
+    <div class="row">
+      <button class="num" onclick="appendToInput('4')">4</button>
+      <button class="num" onclick="appendToInput('5')">5</button>
+      <button class="num" onclick="appendToInput('6')">6</button>
+      <button class="op" onclick="appendToInput('-')">-</button>
+    </div>
 
-<div class="row">
-  <button class="num" onclick="appendToInput('1')">1</button>
-  <button class="num" onclick="appendToInput('2')">2</button>
-  <button class="num" onclick="appendToInput('3')">3</button>
-  <button class="op" onclick="appendToInput('+')">+</button>
-</div>
+    <div class="row">
+      <button class="num" onclick="appendToInput('1')">1</button>
+      <button class="num" onclick="appendToInput('2')">2</button>
+      <button class="num" onclick="appendToInput('3')">3</button>
+      <button class="op" onclick="appendToInput('+')">+</button>
+    </div>
 
-<div class="row">
-  <button class="num" onclick="appendToInput('0')" style="width:178px;">0</button>
-  <button class="equals" onclick="calculate()">=</button>
-</div>  </div>
+    <div class="row">
+      <button class="num" onclick="appendToInput('0')" style="width:178px;">0</button>
+      <button class="equals" onclick="calculate()">=</button>
+    </div>
+  </div>
 
   <div class="small">meow meow</div>
 
-  
-  <script>
-const display = document.getElementById("display");
-  
-  
-  let currentInput = "0";
-  let isResultDisplayed = false;
-
-  
-  const MSG_ERROR = "error";
-  const MSG_INT_REQ = "only good integers >:3";
-  const MSG_INFINITY = "owo thats too big 0_0";
-
-  function updateDisplay() {
-    display.textContent = currentInput;
-  }
-
-  function appendToInput(val) {
-    
-    if (val === '!') {
-      calculateFactorial();
-      return;
-    }
-
-    
-    if (isResultDisplayed) {
-      
-      
-      if (!isNaN(val) || val === '.') {
-        currentInput = "";
-      }
-      isResultDisplayed = false;
-    }
-
-    
-    if (val === '.' && currentInput.includes('.')) return;
-
-    
-    if (currentInput === "0" && val !== ".") {
-      currentInput = val;
-    } else {
-      currentInput += val;
-    }
-
-    updateDisplay();
-  }
-
-   function clearAll() {
-    currentInput = "0";
-    isResultDisplayed = false;
-    updateDisplay();
-  }
-
-   function calculate() {
-    try {
-     
-      let result = eval(currentInput);
-
-      if (!isFinite(result)) {
-        currentInput = MSG_INFINITY;
-      } else {
-        
-        currentInput = parseFloat(result.toFixed(8)).toString();
-      }
-    } catch (err) {
-      currentInput = MSG_ERROR;
-    }
-
-    isResultDisplayed = true;
-    updateDisplay();
-  }
-
-  function calculateFactorial() {
-    try {
-      const num = parseFloat(currentInput);
-
-      
-      if (isNaN(num) || num < 0 || !Number.isInteger(num)) {
-        currentInput = MSG_INT_REQ;
-      } else if (num > 170) {
-        currentInput = MSG_INFINITY; 
-      } else {
-        
-        let result = 1;
-        for (let i = 2; i <= num; i++) {
-          result *= i;
-        }
-        currentInput = result.toString();
-      }
-    } catch (e) {
-      currentInput = MSG_ERROR;
-    }
-
-    isResultDisplayed = true;
-    updateDisplay();
-  }
-
-  
-  console.log("pawculator online dont cat₍^. .^₎");
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>

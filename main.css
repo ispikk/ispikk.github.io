@@ -1,0 +1,95 @@
+body {
+  font-family: "Comic Sans MS", cursive, fantasy;
+  text-align: center;
+  background: #fff0f5;
+  padding: 20px;
+  color: #4a4a4a;
+}
+
+h1 {
+  color: #e85a8c;
+  margin-bottom: 10px;
+  font-size: 3.3rem;
+  text-shadow: 2px 2px #ffe4f0;
+}
+
+.display {
+  font-size: 2.9rem;
+  background: #ffffff;
+  border: 3px solid #f9c8d8;
+  border-radius: 20px;
+  padding: 18px 24px;
+  margin: 24px auto;
+  width: 340px;
+  min-height: 85px;
+  box-shadow: 0 5px #f4a3c2;
+  color: #333333;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.container {
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 12px 0;
+}
+
+button {
+  width: 82px;
+  height: 82px;
+  font-size: 2.2rem;
+  border: none;
+  border-radius: 22px;
+  cursor: pointer;
+  transition: all 0.13s;
+  user-select: none;
+  box-shadow: 0 4px #d68ab0;
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px #d68ab0;
+}
+
+button.num {
+  background: #ffe4f0;
+  color: #c71585;
+  font-weight: bold;
+}
+
+button.op {
+  background: #ff9ac7;
+  color: white;
+  font-weight: bold;
+}
+
+button.equals {
+  background: #ff6b9d;
+  color: white;
+  font-size: 2.5rem;
+  width: 178px;
+  box-shadow: 0 4px #e04d87;
+}
+
+button.equals:active {
+  box-shadow: 0 1px #e04d87;
+}
+
+button.clear {
+  background: #ff85ad;
+  color: white;
+  font-weight: bold;
+}
+
+.small {
+  font-size: 1.2rem;
+  color: #777;
+  margin-top: 12px;
+}
