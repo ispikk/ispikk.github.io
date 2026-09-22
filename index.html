@@ -71,15 +71,17 @@ body {
   z-index: 2;
   font-size: 20px;
   line-height: 1.5;
+  color: #e8f2ff;
   text-shadow: 0 0 4px #e8f2ff, 0 0 10px rgba(232,242,255,0.4);
-  animation: flicker 6s infinite;
+  animation: flicker 6s ease-in-out infinite;
 }
 /* subtle flicker, only its gets annoying when itsstrong */
 @keyframes flicker {
-  0%, 96%, 100% { opacity: 1; }
-  97% { opacity: 0.85; }
-  98% { opacity: 1; }
-  99% { opacity: 0.92; }
+  0%, 91%, 100% { opacity: 1; color: #e8f2ff; text-shadow: 0 0 4px #e8f2ff, 0 0 10px rgba(232,242,255,0.4); }
+  93% { opacity: 0.82; color: #a8e6ff; text-shadow: 0 0 6px #a8e6ff, 0 0 18px rgba(168,230,255,0.6); }
+  95% { opacity: 1; color: #e8f2ff; text-shadow: 0 0 4px #e8f2ff, 0 0 10px rgba(232,242,255,0.4); }
+  97% { opacity: 0.9; color: #cdeeff; text-shadow: 0 0 5px #cdeeff, 0 0 13px rgba(205,238,255,0.5); }
+  99% { opacity: 1; color: #e8f2ff; text-shadow: 0 0 4px #e8f2ff, 0 0 10px rgba(232,242,255,0.4); }
 }
   @media (prefers-reduced-motion: reduce) {
   .content { animation: none; }
@@ -186,7 +188,7 @@ body {
         &gt; <span id="cmd4"></span><span class="cursor" id="cursor4"></span>
         <div class="linkout" id="bio2out">
           Kimmie<br>
-          <a href="https://discord.com/users/707217660831727686" target="_blank" rel="noopener">kimmie.3</a> &middot; they/them &middot; UTC+3 &Theta;&Delta;&amp;<br>
+          kimmie.3 &middot; they/them &middot; UTC+3 &Theta;&Delta;&amp;<br>
           <br>
           &#304;spik-Kenn-Remi<br>
           System of three
@@ -312,7 +314,7 @@ function next2() {
     $("linkstep").style.display = "block";
     typeIt($("cmd3"), "cat links.txt", function () {
       $("cursor3").style.display = "none";
-      $("linkout").innerHTML = '<a href="https://github.com/' + username + '" target="_blank" rel="noopener">github.com/' + username + "</a>";
+      $("linkout").innerHTML = '<a href="https://github.com/' + username + '" target="_blank" rel="noopener">github.com/' + username + '</a><br><a href="https://discord.com/users/707217660831727686" target="_blank" rel="noopener">discord: kimmie.3</a>';
       setTimeout(next3, 400);
     });
   }, 400);
