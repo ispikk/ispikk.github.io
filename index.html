@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TERMINAL</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+
+body {
+  background: #000;
+  margin: 0;
+  padding: 40px 20px;
+  font-family: 'VT323', monospace;
+}
+
+/* the monitor bezel thing */
+.monitor {
+  max-width: 820px;
+  margin: 0 auto;
+  background: #111;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 10px #000;
+}
+
+   .screen {
+  background: #050608;
+  border-radius: 8px;
+  padding: 30px 34px 60px;
+  min-height: 560px;
+  position: relative;
+  overflow: hidden;
+  color: #e8f2ff;
+}
+
+
+   .screen::before {
+  content: "";
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0px,
+    rgba(0,0,0,0) 2px,
+    rgba(0,0,0,0.35) 3px
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* vignette so edges look curvedish */
+.screen::after {
+  content: "";
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.85);
+  pointer-events: none;
+  z-index: 4;
+}
+
+
+  @keyframes flashout {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  font-size: 20px;
+  line-height: 1.5;
+  text-shadow: 0 0 4px #e8f2ff, 0 0 10px rgba(232,242,255,0.4);
+  animation: flicker 6s infinite;
+}
+/* subtle flicker, only its gets annoying when its too strong */
+@keyframes flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.85; }
+  98% { opacity: 1; }
+  99% { opacity: 0.92; }
+}
+  @media (prefers-reduced-motion: reduce) {
+  .content { animation: none; }
+  .flash { display:none; }
+}
+
+.header-box {
+  white-space: pre;
+  font-size: 16px;
+  margin-bottom: 26px;
+  color: #e8f2ff;
+  opacity: 0.9;
+}
+
+.prompt {
+  margin-top: 22px;
+}
+.prompt .arrow { color: #e8f2ff; }
+
+.cursor {
+  display: inline-block;
+  width: 11px;
+  height: 20px;
+  background: #e8f2ff;
+  vertical-align: -4px;
+  animation: blink 1s step-end infinite;
+  box-shadow: 0 0 6px #e8f2ff;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+#whoblock, #repostep, #linkstep, #endline {
+  display: none;
+}
+
+.uname { font-size: 30px; }
+.substats { opacity: 0.75; margin-top: 4px; }
+
+.repo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 18px;
+  padding: 5px 8px;
+  margin: 2px 0;
+  text-decoration: none;
+  color: #e8f2ff;
+}
+.repo:hover {
+  background: #e8f2ff;
+  color: #050608;
+  text-shadow: none;
+}
+.rname { flex: 0 0 210px; }
+.rlang { flex: 0 0 90px; opacity: 0.75; }
+.repo:hover .rlang { opacity: 1; }
+.rstars { flex: 0 0 60px; }
+.rdesc { flex: 1 1 220px; opacity: 0.75; overflow:hidden; text-overflow: ellipsis; white-space: nowrap; }
+.repo:hover .rdesc { opacity: 1; }
+
+@media (max-width: 600px) {
+  .rdesc { flex-basis: 100%; white-space: normal; }
+  .rname { flex-basis: auto; }
+}
+
+#repostatus { opacity: 0.6; }
+
+.linkout a { color: #e8f2ff; text-decoration: underline; }
+
+</style>
+  </head>
+ <body>
+
+<div class="monitor">
+  <div class="screen">
+    <div class="flash"></div>
+    <div class="content">
+
+      <div class="header-box">====================================
+  İSP-LINK OS v2.3
+  ALL RIGHTS RESERVED
+====================================</div>
+
+      <div class="prompt">
+        &gt; <span id="cmd1"></span><span class="cursor" id="cursor1"></span>
+      </div>
+      <div id="whoblock">
+        <div class="uname" id="uname">ispikk</div>
+           <div id="bio">loading...</div>
+        <div class="substats" id="stats"></div>
+      </div>
+
+      <div class="prompt" id="repostep">
+        &gt; <span id="cmd2"></span><span class="cursor" id="cursor2"></span>
+        <div id="repostatus">fetching repo list...</div>
+        <div id="repolist"></div>
+      </div>
+
+      <div class="prompt" id="linkstep">
+        &gt; <span id="cmd3"></span><span class="cursor" id="cursor3"></span>
+        <div class="linkout" id="linkout"></div>
+      </div>
+
+      <div class="prompt" id="endline">
+        &gt; <span class="cursor"></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// change this to my own github username
+var username = "ispikk";
+
+var userData = null;
+var repoData = [];
+
+function $(id) { return document.getElementById(id); }
+
+// types text out letter by letter into an element
+function typeIt(el, txt, cb) {
+  var i = 0;
+  el.innerHTML = "";
+  var iv = setInterval(function () {
+    el.innerHTML += txt.charAt(i);
+    i++;
+    if (i >= txt.length) {
+      clearInterval(iv);
+      if (cb) cb();
+    }
+  }, 40);
+}
+
+function timeAgo(d) {
+  var diff = (Date.now() - new Date(d).getTime()) / 1000;
+  if (diff > 31536000) return Math.floor(diff / 31536000) + "y";
+  if (diff > 2592000) return Math.floor(diff / 2592000) + "mo";
+  if (diff > 604800) return Math.floor(diff / 604800) + "w";
+  if (diff > 86400) return Math.floor(diff / 86400) + "d";
+  if (diff > 3600) return Math.floor(diff / 3600) + "h";
+  return "now";
+}
+
+
+typeIt($("cmd1"), "whoami", function () {
+  $("cursor1").style.display = "none";
+
+  fetch("https://api.github.com/users/" + username)
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      userData = data;
+      $("uname").innerHTML = data.name ? data.name : username;
+      $("bio").innerHTML = data.bio ? data.bio : "software developer";
+      var s = "";
+      if (data.public_repos != null) s += data.public_repos + " repos  ";
+      if (data.followers != null) s += data.followers + " followers";
+      $("stats").innerHTML = s;
+      $("whoblock").style.display = "block";
+      next1();
+    })
+    .catch(function (e) {
+      console.log("whoami fetch failed", e);
+      $("uname").innerHTML = username;
+      $("bio").innerHTML = "software developer";
+      $("whoblock").style.display = "block";
+      next1();
+    });
+});
+
+function next1() {
+  setTimeout(function () {
+    $("repostep").style.display = "block";
+    typeIt($("cmd2"), "ls repos/ --sort=stars", function () {
+      $("cursor2").style.display = "none";
+      loadRepos();
+    });
+  }, 400);
+}
+
+function loadRepos() {
+  fetch("https://api.github.com/users/" + username + "/repos?per_page=100&sort=pushed")
+    .then(function (r) {
+      if (!r.ok) throw new Error("bad response, probably rate limited (60 req/hr unauthenticated)");
+      return r.json();
+    })
+    .then(function (data) {
+      repoData = data.filter(function (r) { return !r.private; });
+      repoData.sort(function (a, b) {
+        return b.stargazers_count - a.stargazers_count || new Date(b.pushed_at) - new Date(a.pushed_at);
+      });
+      renderRepos();
+    })
+    .catch(function (e) {
+      $("repostatus").innerHTML = "# " + e.message;
+      next2();
+    });
+}
+
+function renderRepos() {
+  $("repostatus").style.display = "none";
+  var html = "";
+  for (var i = 0; i < repoData.length; i++) {
+    var r = repoData[i];
+    var desc = r.description ? r.description : "-- no description --";
+    var lang = r.language ? r.language : "??";
+    html += '<a class="repo" href="' + r.html_url + '" target="_blank" rel="noopener">';
+    html += '<span class="rname">&gt; ' + r.name + (r.fork ? " [FORK]" : "") + "</span>";
+    html += '<span class="rlang">' + lang + "</span>";
+    html += '<span class="rstars">*' + r.stargazers_count + "</span>";
+    html += '<span class="rdesc">' + desc + " (" + timeAgo(r.pushed_at) + ")</span>";
+    html += "</a>";
+  }
+  $("repolist").innerHTML = html;
+  next2();
+}
+
+function next2() {
+  setTimeout(function () {
+    $("linkstep").style.display = "block";
+    typeIt($("cmd3"), "cat links.txt", function () {
+      $("cursor3").style.display = "none";
+      $("linkout").innerHTML = '<a href="https://github.com/' + username + '" target="_blank" rel="noopener">github.com/' + username + "</a>";
+      setTimeout(function () {
+        $("endline").style.display = "block";
+      }, 300);
+    });
+  }, 400);
+}
+</script>
+
+</body>
+</html>
