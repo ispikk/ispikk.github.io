@@ -110,7 +110,7 @@ body {
 }
 @keyframes blink { 50% { opacity: 0; } }
 
-#whoblock, #repostep, #linkstep, #endline {
+#whoblock, #repostep, #linkstep, #bio2step, #endline {
   display: none;
 }
 
@@ -180,6 +180,17 @@ body {
       <div class="prompt" id="linkstep">
         &gt; <span id="cmd3"></span><span class="cursor" id="cursor3"></span>
         <div class="linkout" id="linkout"></div>
+      </div>
+
+      <div class="prompt" id="bio2step">
+        &gt; <span id="cmd4"></span><span class="cursor" id="cursor4"></span>
+        <div class="linkout" id="bio2out">
+          Kimmie<br>
+          <a href="https://discord.com/users/707217660831727686" target="_blank" rel="noopener">kimmie.3</a> &middot; they/them &middot; UTC+3 &Theta;&Delta;&amp;<br>
+          <br>
+          &#304;spik-Kenn-Remi<br>
+          System of three
+        </div>
       </div>
 
       <div class="prompt" id="endline">
@@ -302,11 +313,19 @@ function next2() {
     typeIt($("cmd3"), "cat links.txt", function () {
       $("cursor3").style.display = "none";
       $("linkout").innerHTML = '<a href="https://github.com/' + username + '" target="_blank" rel="noopener">github.com/' + username + "</a>";
-      setTimeout(function () {
-        $("endline").style.display = "block";
-      }, 300);
+      setTimeout(next3, 400);
     });
   }, 400);
+}
+
+function next3() {
+  $("bio2step").style.display = "block";
+  typeIt($("cmd4"), "cat bio.txt", function () {
+    $("cursor4").style.display = "none";
+    setTimeout(function () {
+      $("endline").style.display = "block";
+    }, 300);
+  });
 }
 </script>
 
