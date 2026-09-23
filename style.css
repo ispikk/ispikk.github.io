@@ -22,7 +22,9 @@ body {
   min-height: 560px;
   position: relative;
   overflow: hidden;
-  color: #e8f2ff;
+  --phosphor: #e8f2ff;
+  --phosphor-dim: rgba(232,242,255,0.4);
+  color: var(--phosphor);
 }
 
 
@@ -61,8 +63,8 @@ body {
   z-index: 2;
   font-size: 20px;
   line-height: 1.5;
-  color: #e8f2ff;
-  text-shadow: 0 0 4px #e8f2ff, 0 0 10px rgba(232,242,255,0.4);
+  color: var(--phosphor);
+  text-shadow: 0 0 4px var(--phosphor), 0 0 10px var(--phosphor-dim);
   transition: opacity 0.05s linear, color 0.05s linear, text-shadow 0.05s linear;
 }
   @media (prefers-reduced-motion: reduce) {
@@ -74,23 +76,25 @@ body {
   white-space: pre;
   font-size: 16px;
   margin-bottom: 26px;
-  color: #e8f2ff;
+  color: var(--phosphor);
   opacity: 0.9;
+  transition: color 1s linear;
 }
 
 .prompt {
   margin-top: 22px;
 }
-.prompt .arrow { color: #e8f2ff; }
+.prompt .arrow { color: var(--phosphor); }
 
 .cursor {
   display: inline-block;
   width: 11px;
   height: 20px;
-  background: #e8f2ff;
+  background: var(--phosphor);
   vertical-align: -4px;
   animation: blink 1s step-end infinite;
-  box-shadow: 0 0 6px #e8f2ff;
+  box-shadow: 0 0 6px var(--phosphor);
+  transition: background 1s linear, box-shadow 1s linear;
 }
 @keyframes blink { 50% { opacity: 0; } }
 
@@ -109,10 +113,11 @@ body {
   padding: 5px 8px;
   margin: 2px 0;
   text-decoration: none;
-  color: #e8f2ff;
+  color: var(--phosphor);
+  transition: color 1s linear;
 }
 .repo:hover {
-  background: #e8f2ff;
+  background: var(--phosphor);
   color: #050608;
   text-shadow: none;
 }
@@ -130,7 +135,7 @@ body {
 
 #repostatus { opacity: 0.6; }
 
-.linkout a { color: #e8f2ff; text-decoration: underline; }
+.linkout a { color: var(--phosphor); text-decoration: underline; transition: color 1s linear; }
 
 .badges {
   display: flex;
@@ -140,8 +145,9 @@ body {
 .badge {
   position: relative;
   display: inline-flex;
-  color: #e8f2ff;
+  color: var(--phosphor);
   text-decoration: none;
+  transition: color 1s linear;
 }
 .badge img, .badge .emoji-icon { width: 22px; height: 22px; display: block; }
 .badge .emoji-icon { font-size: 20px; line-height: 1; }
@@ -152,12 +158,12 @@ body {
   transform: translateX(-50%);
   white-space: nowrap;
   background: #050608;
-  border: 1px solid #e8f2ff;
+  border: 1px solid var(--phosphor);
   padding: 3px 8px;
   font-size: 16px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s;
-  text-shadow: 0 0 4px #e8f2ff;
+  transition: opacity 0.15s, border-color 1s linear, text-shadow 1s linear;
+  text-shadow: 0 0 4px var(--phosphor);
 }
 .badge:hover .tip { opacity: 1; }
