@@ -5,7 +5,6 @@ body {
   font-family: 'VT323', monospace;
 }
 
-/* the monitor bezel thing */
 .monitor {
   max-width: 820px;
   margin: 0 auto;
@@ -167,3 +166,19 @@ body {
   text-shadow: 0 0 4px var(--phosphor);
 }
 .badge:hover .tip { opacity: 1; }
+
+#typed, .typed { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+#shell, #endline { text-transform: uppercase; }
+
+#endline.busy { opacity: 0; }
+
+#cmdinput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  padding: 0;
+  font-size: 16px;
+}

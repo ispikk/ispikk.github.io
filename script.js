@@ -1,4 +1,3 @@
-// change this to my own github username
 var username = "ispikk";
 
 var userData = null;
@@ -6,7 +5,6 @@ var repoData = [];
 
 function $(id) { return document.getElementById(id); }
 
-// types text out letter by letter into an element
 function typeIt(el, txt, cb) {
   var i = 0;
   el.innerHTML = "";
@@ -37,7 +35,6 @@ var GLITCH_COLOR = "#a8e6ff";
 var GLITCH_SHADOW = "0 0 6px #a8e6ff, 0 0 18px rgba(168,230,255,0.6)";
 var isFlickering = false;
 
-// the "white phosphor" glow drifts white -> purple -> white, very very slowly
 var PHOSPHOR_WHITE = [232, 242, 255];
 var PHOSPHOR_PURPLE = [216, 180, 255];
 var DRIFT_CYCLE_MS = 6 * 60 * 1000;
@@ -63,7 +60,6 @@ function setGlow(opacity, color, shadow) {
   contentEl.style.textShadow = shadow;
 }
 
-// pushes the current drifted color out to every phosphor-colored element
 function applyPhosphor() {
   var p = currentPhosphor();
   screenEl.style.setProperty("--phosphor", p.hex);
@@ -81,7 +77,6 @@ function settle() {
   applyPhosphor();
 }
 
-// one irregular dip-and-recover, like a CRT losing sync for a frame
 function flickerOnce() {
   isFlickering = true;
   var dip = 0.75 + Math.random() * 0.2;
@@ -89,7 +84,6 @@ function flickerOnce() {
   setTimeout(settle, 50 + Math.random() * 90);
 }
 
-// keeps scheduling flickers at random, non-repeating intervals
 function scheduleFlicker() {
   if (reduceMotion) return;
   var delay = 2500 + Math.random() * 7000;
@@ -102,7 +96,6 @@ function scheduleFlicker() {
   }, delay);
 }
 
-// unstable power-on stutter before the screen holds steady
 function bootFlicker(cb) {
   var p = applyPhosphor();
   if (reduceMotion) { cb(); return; }
@@ -248,6 +241,106 @@ function next4() {
     $("cursor5").style.display = "none";
     setTimeout(function () {
       $("endline").style.display = "block";
+      $("cmdinput").focus({ preventScroll: true });
     }, 300);
   });
 }
+
+var builtins = {
+  "help": function () {
+    return "AVAILABLE COMMANDS: HELP, CLEAR";
+  },
+  "clear": function () {
+    $("shell").innerHTML = "";
+  }
+};
+
+var busy = false;
+
+function typeOut(el, html, cb) {
+  el.innerHTML = html;
+  if (reduceMotion) { cb(); return; }
+  var nodes = [];
+  var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  var full = nodes.map(function (n) {
+    var t = n.nodeValue;
+    n.nodeValue = "";
+    return t;
+  });
+  var ni = 0;
+  var ci = 0;
+  var iv = setInterval(function () {
+    while (ni < nodes.length && ci >= full[ni].length) { ni++; ci = 0; }
+    if (ni >= nodes.length) {
+      clearInterval(iv);
+      cb();
+      return;
+    }
+    ci++;
+    nodes[ni].nodeValue = full[ni].slice(0, ci);
+    $("endline").scrollIntoView({ block: "nearest" });
+  }, 20);
+}
+
+function lookup(table, key) {
+  for (var name in table) {
+    if (Object.prototype.hasOwnProperty.call(table, name) && name.toLowerCase() === key) {
+      return table[name];
+    }
+  }
+}
+
+function runCommand(line) {
+  var echo = document.createElement("div");
+  echo.className = "prompt";
+  echo.innerHTML = "&gt;";
+  var echoText = document.createElement("span");
+  echoText.className = "typed";
+  echoText.textContent = line;
+  echo.appendChild(echoText);
+  $("shell").appendChild(echo);
+
+  var key = line.trim().toLowerCase();
+  if (key === "") return;
+
+  var out;
+  var builtin = lookup(builtins, key);
+  var egg = lookup(window.commands || {}, key);
+  if (builtin) {
+    out = builtin();
+  } else if (egg !== undefined) {
+    out = typeof egg === "function" ? egg(line) : egg;
+  } else {
+    out = "ERROR: COMMAND NOT RECOGNIZED";
+  }
+  if (!out) return;
+
+  var res = document.createElement("div");
+  res.className = "linkout";
+  $("shell").appendChild(res);
+  busy = true;
+  $("endline").classList.add("busy");
+  typeOut(res, out, function () {
+    busy = false;
+    $("endline").classList.remove("busy");
+    $("endline").scrollIntoView({ block: "nearest" });
+  });
+}
+
+$("cmdinput").addEventListener("input", function () {
+  $("typed").textContent = this.value;
+});
+
+$("cmdinput").addEventListener("keydown", function (e) {
+  if (e.key !== "Enter" || e.isComposing || busy) return;
+  runCommand(this.value);
+  this.value = "";
+  $("typed").textContent = "";
+  $("endline").scrollIntoView({ block: "nearest" });
+});
+
+document.querySelector(".screen").addEventListener("click", function () {
+  if (window.getSelection().toString()) return;
+  $("cmdinput").focus({ preventScroll: true });
+});
