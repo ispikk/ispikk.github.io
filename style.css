@@ -24,6 +24,7 @@ body {
   --phosphor: #e8f2ff;
   --phosphor-dim: rgba(232,242,255,0.4);
   color: var(--phosphor);
+  transition: filter 1.5s ease;
 }
 
 
@@ -181,4 +182,70 @@ body {
   border: 0;
   padding: 0;
   font-size: 16px;
+}
+
+.egg-red { color: #ff5555; text-shadow: 0 0 6px #ff5555; }
+.egg-gold { color: #ffd84a; text-shadow: 0 0 6px #ffd84a; }
+
+.mc-splash {
+  display: inline-block;
+  color: #ffff55;
+  text-shadow: 0 0 6px #ffff55;
+  transform: rotate(-8deg);
+  animation: mc-splash 0.5s ease-in-out infinite alternate;
+}
+@keyframes mc-splash { to { transform: rotate(-8deg) scale(1.08); } }
+
+.monitor.shake { animation: shake 0.5s; }
+@keyframes shake {
+  10%, 50%, 90% { transform: translate(-6px, 3px); }
+  30%, 70% { transform: translate(6px, -3px); }
+}
+
+.bigshot {
+  color: #ffff55;
+  text-shadow: 0 0 6px currentColor;
+  animation: bigshot 0.4s steps(1) 10;
+}
+@keyframes bigshot { 50% { color: #ff77ff; } }
+
+.jevil { display: inline-block; animation: jevil 0.5s ease-in-out 6; }
+@keyframes jevil {
+  25% { transform: rotate(-4deg) scale(1.05); }
+  75% { transform: rotate(4deg) scale(1.05); }
+}
+
+.gaster { transition: opacity 2s; }
+.gaster.gone { opacity: 0; }
+
+.screen.sunlit { filter: sepia(0.7) saturate(1.8) brightness(1.2); }
+
+.sun-dark {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #000;
+  animation: sun-dark 2.5s forwards;
+}
+.sun-dark span {
+  position: absolute;
+  left: 34px;
+  bottom: 60px;
+  opacity: 0;
+  font-size: 20px;
+  animation: sun-dark 2s 4s forwards;
+}
+@keyframes sun-dark { from { opacity: 0; } to { opacity: 1; } }
+
+.breathe { display: block; position: relative; height: 80px; margin-top: 8px; }
+.feather { position: absolute; left: 0; bottom: 0; animation: feather 8s ease-in-out 3 forwards; }
+@keyframes feather { 50% { transform: translateY(-50px); } }
+.breathe-in, .breathe-out { position: absolute; left: 40px; bottom: 0; }
+.breathe-in { animation: breathe-in 8s step-end 3 forwards; }
+.breathe-out { opacity: 0; animation: breathe-out 8s step-end 3 forwards; }
+@keyframes breathe-in { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes breathe-out { 0% { opacity: 0; } 50%, 100% { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .monitor.shake, .jevil, .mc-splash, .bigshot { animation: none; }
 }

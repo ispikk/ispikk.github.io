@@ -312,7 +312,7 @@ function runCommand(line) {
   } else if (egg !== undefined) {
     out = typeof egg === "function" ? egg(line) : egg;
   } else {
-    out = "ERROR: COMMAND NOT RECOGNIZED";
+    out = (typeof window.unknownCommand === "function" && window.unknownCommand(line)) || "ERROR: COMMAND NOT RECOGNIZED";
   }
   if (!out) return;
 
