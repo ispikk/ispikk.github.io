@@ -172,6 +172,21 @@ body {
 
 #shell, #endline { text-transform: uppercase; }
 
+.linkout .repo { text-decoration: none; }
+
+.fetch { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.fetch-logo, .fetch-info { white-space: pre; }
+
+.screen.off .content { animation: crt-off 0.5s ease-in forwards; }
+@keyframes crt-off {
+  60% { transform: scale(1, 0.004); filter: brightness(4); opacity: 1; }
+  100% { transform: scale(0, 0.004); filter: brightness(4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen.off .content { animation: none; visibility: hidden; }
+}
+
 #endline.busy { opacity: 0; }
 
 #cmdinput {
