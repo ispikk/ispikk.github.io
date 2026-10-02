@@ -42,10 +42,10 @@ const createTerminal = (hooks) => {
     const { signal, hz, phosphor } = hooks.info();
     const line = Math.round(signal.total * hz);
     return [
-      "Linux version 2.3.0-isp (kimmie@isp-link)",
+      "Linux version 2.3.0-kimm (kimmie@kimm-link)",
       `Command line: ro quiet console=tty0 phosphor=${phosphor.toLowerCase()}`,
       "BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable",
-      "DMI: ISP-LINK PHOSPHOR TEST UNIT, BIOS 2.3 09/26/2026",
+      "DMI: KIMM-LINK PHOSPHOR TEST UNIT, BIOS 2.3 09/26/2026",
       "tsc: Detected 4.772 MHz processor",
       "Memory: 640K available",
       "Console: mono 80x25",
@@ -58,7 +58,7 @@ const createTerminal = (hooks) => {
       "serial: ttyS0 at 0x3f8 is a 16550A",
       "random: crng init done",
       "NET: Registered protocol family 1",
-      "isp-link: connected to the Wired",
+      "kimm-link: connected to the Wired",
       "systemd[1]: Startup finished in 0.3s."
     ].map((text, i) => `[${(i * 0.0417 + i * i * 0.0031).toFixed(6).padStart(12)}] ${text}`).join("\n");
   };
@@ -156,7 +156,7 @@ const createTerminal = (hooks) => {
     queue = "";
     let mem = "";
     for (let k = 16; k <= 640; k += 16) mem += `\rMEMORY TEST ${String(k).padStart(4, "0")}K`;
-    print(`İSP-LINK OS v2.3\nPHOSPHOR TEST UNIT\n\n${mem} OK\n\nTYPE HELP\n> `);
+    print(`KIMM-LINK OS v2.3\nPHOSPHOR TEST UNIT\n\n${mem} OK\n\nTYPE HELP\n> `);
   };
 
   const update = (dt, fieldHz) => {

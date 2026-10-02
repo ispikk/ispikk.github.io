@@ -1,4 +1,5 @@
-const username = "ispikk";
+const username = "kimmie3";
+const displayName = "kimmie";
 
 const $ = (id) => document.getElementById(id);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -119,7 +120,7 @@ const showUser = async () => {
   try {
     const data = profile ?? await (await fetch(`https://api.github.com/users/${username}`)).json();
     profile = data;
-    $("uname").textContent = data.name || username;
+    $("uname").textContent = displayName;
     $("bio").textContent = data.bio || "software developer";
     let stats = "";
     if (data.public_repos != null) stats += `${data.public_repos} repos  `;
@@ -127,7 +128,7 @@ const showUser = async () => {
     $("stats").textContent = stats;
   } catch (e) {
     console.log("whoami fetch failed", e);
-    $("uname").textContent = username;
+    $("uname").textContent = displayName;
     $("bio").textContent = "software developer";
   }
   $("whoblock").style.display = "block";
@@ -391,10 +392,10 @@ const builtins = {
   neofetch: () => {
     const interests = [...document.querySelectorAll("#intereststep img")].map((img) => img.alt).join(", ");
     const info = [
-      `${username}@isp-link`,
-      "-".repeat(username.length + 9),
-      "OS: İSP-LINK OS v2.3",
-      "Host: ispikk.github.io",
+      `${displayName}@kimm-link`,
+      "-".repeat(displayName.length + 10),
+      "OS: KIMM-LINK OS v2.3",
+      "Host: kimmie3.github.io",
       `Uptime: ${pageUptime()}`,
       `Resolution: ${screen.width}x${screen.height}`,
       `Theme: ${theme}`,

@@ -543,7 +543,7 @@ document.addEventListener("pointerdown", () => {
 window.addEventListener("hashchange", () => setMode(location.hash.slice(1)));
 new ResizeObserver(fit).observe($("tube"));
 new ResizeObserver(drawDecay).observe($("decay"));
-document.fonts?.load("14px VT323", "İSP-LINK").then(() => {
+document.fonts?.load("14px VT323", "KIMM-LINK").then(() => {
   term.touch();
   drawDecay();
 }).catch(() => {});
