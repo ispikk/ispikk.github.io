@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHOSPHOR</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="rig">
+  <section class="monitor">
+    <div class="bezel" id="bezel">
+      <canvas id="tube" aria-label="CRT screen"></canvas>
+      <input id="keys" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input">
+      <div class="fault" id="fault" hidden></div>
+    </div>
+    <div class="plate">
+      <span class="brand">İSP-LINK</span>
+      <span class="model" id="model"></span>
+      <button class="power" id="power" aria-pressed="false"><span class="led" id="led"></span>POWER</button>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div>
+      <h1>PHOSPHOR</h1>
+      <p class="sub">crt phosphor simulator</p>
+    </div>
+
+    <div class="field">
+      <span class="label">MODE</span>
+      <div class="modes" role="group" aria-label="mode">
+        <button data-mode="term">TERM</button>
+        <button data-mode="radar">RADAR</button>
+        <button data-mode="scope">SCOPE</button>
+      </div>
+    </div>
+
+    <p class="hint" data-for="term">click the screen and type help</p>
+    <p class="hint" data-for="radar">blue flash is the sweep, yellow is the afterglow</p>
+    <p class="hint" data-for="scope">drop a stereo audio file on the screen (L = x, R = y)</p>
+
+    <label class="field"><span class="label">PHOSPHOR</span><select id="phosphor"></select></label>
+    <p class="note" id="pnote"></p>
+    <canvas id="decay" aria-label="decay curve"></canvas>
+    <p class="note" id="pleft"></p>
+
+    <label class="field" data-for="term scope"><span class="label">SIGNAL</span><select id="signal"></select></label>
+    <div class="field" data-for="scope">
+      <span class="label">AUDIO</span>
+      <label class="file"><input type="file" id="audiofile" accept="audio/*"><span id="audioname">LOAD FILE</span></label>
+    </div>
+
+    <label class="field slider" data-for="term"><span class="label">REFRESH</span><input type="range" id="hz"><output id="hzout"></output></label>
+    <label class="field slider" data-for="radar"><span class="label">ROTATION</span><input type="range" id="rpm"><output id="rpmout"></output></label>
+    <label class="field slider" data-for="scope"><span class="label">FREQ</span><input type="range" id="freq"><output id="freqout"></output></label>
+    <label class="field slider"><span class="label">BEAM</span><input type="range" id="beam"><output id="beamout"></output></label>
+    <label class="field slider"><span class="label">FOCUS</span><input type="range" id="focus"><output id="focusout"></output></label>
+    <label class="field slider"><span class="label">CURVE</span><input type="range" id="curve"><output id="curveout"></output></label>
+    <label class="field slider"><span class="label">GLOW</span><input type="range" id="glow"><output id="glowout"></output></label>
+
+    <label class="check" data-for="term"><input type="checkbox" id="whine"><span>FLYBACK WHINE (sound)</span></label>
+    <label class="check" data-for="term"><input type="checkbox" id="unlock"><span>FLICKER MODES</span></label>
+    <p class="warn" data-for="term" id="unlockwarn">⚠ slow scan and interlace flash a lot. skip if flashing lights bother you</p>
+    <label class="check" data-for="term"><input type="checkbox" id="interlace" disabled><span>INTERLACE</span></label>
+
+    <p class="readout" id="readout"></p>
+    <p class="fine">decay times are approximate</p>
+    <a class="back" href="../">cd ..</a>
+  </aside>
+</main>
+
+<script src="phosphors.js"></script>
+<script src="crt.js"></script>
+<script src="sources.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>
